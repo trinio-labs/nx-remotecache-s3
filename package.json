@@ -1,6 +1,6 @@
 {
-  "name": "@trinio-labs/nx-customcache-s3",
-  "version": "0.1.1",
+  "name": "@trinio-labs/nx-remotecache-s3",
+  "version": "0.1.3",
   "description": "Nx task runner that uses computational cache on AWS",
   "main": "index.js",
   "scripts": {
@@ -11,17 +11,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/trinio-labs/nx-customcache-s3.git"
+    "url": "git+https://github.com/trinio-labs/nx-remotecache-s3.git"
   },
   "author": "Theo Ribeiro",
   "license": "GPL-3.0-or-later",
   "bugs": {
-    "url": "https://github.com/trinio-labs/nx-customcache-s3/issues"
+    "url": "https://github.com/trinio-labs/nx-remotecache-s3/issues"
   },
-  "homepage": "https://github.com/trinio-labs/nx-customcache-s3#readme",
+  "homepage": "https://github.com/trinio-labs/nx-remotecache-s3#readme",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.54.0",
-    "@aws-sdk/credential-provider-ini": "^3.54.0",
+    "@aws-sdk/credential-provider-node": "^3.67.0",
     "get-stream": "^6.0.1",
     "nx-remotecache-custom": "^1.1.0"
   },

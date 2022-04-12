@@ -1,12 +1,10 @@
 import { createCustomRunner, initEnv } from "nx-remotecache-custom"
 import { S3 } from "@aws-sdk/client-s3"
-import { fromIni } from "@aws-sdk/credential-provider-ini"
+// import { fromIni } from "@aws-sdk/credential-provider-ini"
+import { defaultProvider } from '@aws-sdk/credential-provider-node'
 import getStream from "get-stream"
 import Stream from "stream"
 
-const ENV_ACCESS_KEY_ID = "NX_CACHE_S3_ACCESS_KEY_ID"
-const ENV_SECRET_ACCESS_KEY = "NX_CACHE_S3_SECRET_ACCESS_KEY"
-const ENV_SESSION_TOKEN = "NX_CACHE_S3_SESSION_TOKEN"
 const ENV_PROFILE = "NX_CACHE_S3_PROFILE"
 const ENV_BUCKET = "NX_CACHE_S3_BUCKET"
 const ENV_PREFIX = "NX_CACHE_S3_PREFIX"
@@ -32,7 +30,7 @@ export default createCustomRunner<S3Options>(async (options) => {
   const s3Storage = new S3({
     endpoint: getEnv(ENV_ENDPOINT) ?? options.endpoint,
     region: getEnv(ENV_REGION) ?? options.region,
-    credentials: getCredentials(options),
+    credentials: defaultProvider({ profile: getEnv(ENV_PROFILE) ?? options.profile })
   })
 
   const bucket = getEnv(ENV_BUCKET) ?? options.bucket
@@ -77,23 +75,3 @@ export default createCustomRunner<S3Options>(async (options) => {
       }),
   }
 })
-
-function getCredentials(options: S3Options) {
-  const accessKeyId = getEnv(ENV_ACCESS_KEY_ID) ?? options.accessKeyId
-  const secretAccessKey =
-    getEnv(ENV_SECRET_ACCESS_KEY) ?? options.secretAccessKey
-  const sessionToken = getEnv(ENV_SESSION_TOKEN) ?? options.sessionToken
-  const profile = getEnv(ENV_PROFILE) ?? options.profile
-
-  if (accessKeyId && secretAccessKey) {
-    return {
-      accessKeyId,
-      secretAccessKey,
-      sessionToken,
-    }
-  }
-  if (profile) {
-    return fromIni({ profile })
-  }
-  return undefined
-}
